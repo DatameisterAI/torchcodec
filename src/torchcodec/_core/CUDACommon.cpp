@@ -189,10 +189,14 @@ torch::Tensor convertNV12FrameToRGB(
   NppiSize oSizeROI = {frameDims.width, frameDims.height};
   Npp8u* yuvData[2] = {avFrame->data[0], avFrame->data[1]};
 
-  NppStatus status;
-
-  // For background, see
-  // Note [YUV -> RGB Color Conversion, color space and color range]
+// Offsets = -(coeff_U + coeff_V) * 128 per output row:
+//   R: -(0.0 + 1.5748) * 128 = -201.5744
+//   G: -(-0.187324 + -0.468124) * 128 = +83.8974
+//   B: -(1.8556 + 0.0) * 128 = -237.5168
+const Npp32f bt709FullRangeColorTwist[3][4] = {
+    {1.0f, 0.0f, 1.5748f, -201.5744f},
+    {1.0f, -0.187324273f, -0.468124273f, 83.8974f},
+    {1.0f, 1.8556f, 0.0f, -237.5168ersion, color space and color range]
   if (avFrame->colorspace == AVColorSpace::AVCOL_SPC_BT709) {
     if (avFrame->color_range == AVColorRange::AVCOL_RANGE_JPEG) {
       // NPP provides a pre-defined color conversion function for BT.709 full

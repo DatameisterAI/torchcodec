@@ -119,6 +119,7 @@ class CMakeBuild(build_ext):
             "TORCHCODEC_DISABLE_HOMEBREW_RPATH", "OFF"
         )
         python_version = sys.version_info
+        pybind11_dir = os.environ.get("pybind11_DIR", "")
         cmake_args = [
             f"-DCMAKE_INSTALL_PREFIX={self._install_prefix}",
             f"-DTorch_DIR={torch_dir}",
@@ -129,6 +130,8 @@ class CMakeBuild(build_ext):
             f"-DTORCHCODEC_DISABLE_COMPILE_WARNING_AS_ERROR={torchcodec_disable_compile_warning_as_error}",
             f"-DTORCHCODEC_DISABLE_HOMEBREW_RPATH={torchcodec_disable_homebrew_rpath}",
         ]
+        if pybind11_dir:
+            cmake_args.append(f"-Dpybind11_DIR={pybind11_dir}")
 
         self.build_temp = os.getenv("TORCHCODEC_CMAKE_BUILD_DIR", self.build_temp)
         print(f"Using {self.build_temp = }", flush=True)

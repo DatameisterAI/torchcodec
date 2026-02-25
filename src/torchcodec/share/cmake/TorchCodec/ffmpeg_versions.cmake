@@ -87,7 +87,6 @@ endfunction()
 function(add_ffmpeg_target_with_pkg_config ret_ffmpeg_major_version_var)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(TORCHCODEC_LIBAV REQUIRED IMPORTED_TARGET
-        libavdevice
         libavfilter
         libavformat
         libavcodec
