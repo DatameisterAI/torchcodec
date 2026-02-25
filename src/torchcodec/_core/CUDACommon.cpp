@@ -198,6 +198,8 @@ const Npp32f bt709FullRangeColorTwist[3][4] = {
     {1.0f, -0.187324273f, -0.468124273f, 83.8974f},
     {1.0f, 1.8556f, 0.0f, -237.5168f}};
 
+  NppStatus status;
+
   // Select color conversion based on [version, color space and color range]
   if (avFrame->colorspace == AVColorSpace::AVCOL_SPC_BT709) {
     if (avFrame->color_range == AVColorRange::AVCOL_RANGE_JPEG) {
